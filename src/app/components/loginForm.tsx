@@ -1,52 +1,31 @@
 "use client"
+
 import React from 'react'
 import {useForm} from "react-hook-form"
 import { useEffect } from 'react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 type inputs={
-    password: string;
-    email: string;
-    username:string;
+    email:string;
+    password:string;
+
 }
+const LoginForm = () => {
 
-const RegistrationForm = () => {
-    const {register, handleSubmit,formState,reset}= useForm<inputs>()
-    useEffect( ()=>{
-        reset({password:"",email:"",username:""})
-    },[]);
+    const {register,handleSubmit,formState,reset}= useForm<inputs>();
+
+    useEffect(()=>{
+       reset({email:"",password:""}) 
+    },[])
     const handleFormSubmit=()=>{
-        reset();
+        reset()
     }
-    
   return (
-    <div className='flex  flex-col items-center justify-center h-screen'>
-        <div className=''>
-            <h1 className='text-xl font-bold text-center py-2'>Registration</h1>
-            <form className= 'border-t-4 border-blue-400 shadow-lg p-5 rounded-md'
-             onSubmit={handleSubmit(handleFormSubmit)}>
-                <div className='mb-2'>
-                    <label htmlFor="username"> Username</label>
-                    <Input
-                    type="text"
-                    placeholder='username'
-                    {...register("username",{
-                        required:"The username is required",
-                        pattern:{
-                            value:/^[a-zA-Z]+$/,
-                            message:"the username should only contain letters"
-                        }
-                    })}
-                    />
-                    {formState.errors.username && 
-                    <p className='text-red-500'>
-                        {formState.errors.username.message}
-                    </p>
-                    }
-
-                </div>
-
-                <div className='mb-2'>
+    <div className='flex flex-col items-center justify-center h-screen'>
+<div >
+    <h1 className='text-xl font-bold my-4 text text-center'>Login</h1>
+    <form onSubmit={handleSubmit(handleFormSubmit)} className='shadow-lg border-t-4 border-blue-400 rounded-lg p-5'>
+    <div className='mb-2'>
                     <label htmlFor="email">Email</label>
                     <Input type="text"  placeholder='email'
                     {...register("email",{
@@ -82,12 +61,12 @@ const RegistrationForm = () => {
                     }
                 </div>
 
-                <Button type='submit'>Register</Button>
-            </form>
-        </div>
+                <Button type="submit">Login</Button>
 
+    </form>
+</div>
     </div>
   )
 }
 
-export default RegistrationForm
+export default LoginForm
