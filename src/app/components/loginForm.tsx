@@ -5,6 +5,7 @@ import {useForm} from "react-hook-form"
 import { useEffect } from 'react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 type inputs={
     email:string;
     password:string;
@@ -62,6 +63,8 @@ const LoginForm = () => {
                 </div>
 
                 <Button type="submit">Login</Button>
+
+                <Link  href={'/registration'} className='text-sm mt-3 text-right block'> Don't have an account? <span className='underline text-blue-500'>Register</span></Link>
 
     </form>
 </div>
