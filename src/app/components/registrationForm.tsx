@@ -50,7 +50,7 @@ const RegistrationForm = () => {
                 alert("Registration successful!");
 
                 reset();
-                router.push("/")
+                router.push("/login")
             } else {
                 alert("Failed to register.");
             }
