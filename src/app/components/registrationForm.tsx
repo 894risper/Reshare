@@ -4,6 +4,8 @@ import {useForm} from "react-hook-form"
 import { useEffect } from 'react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 type inputs={
     password: string;
     email: string;
@@ -15,8 +17,51 @@ const RegistrationForm = () => {
     useEffect( ()=>{
         reset({password:"",email:"",username:""})
     },[]);
-    const handleFormSubmit=()=>{
-        reset();
+    const router = useRouter()
+    const handleFormSubmit= async(data:inputs)=>{
+
+
+        try{
+
+            const res = await fetch("api/userExists",{
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({email:data.email}),
+            });
+            const {user}= await res.json();
+
+            if(user){
+                alert("User already exists with this email")
+                return;
+            }
+
+
+           const resRegister= await fetch('api/register',{
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify(data)
+            });
+
+            if (resRegister.ok) {
+                alert("Registration successful!");
+
+                reset();
+                router.push("/login")
+            } else {
+                alert("Failed to register.");
+            }
+
+        }catch(error){
+            console.log("error registaring the user")
+        }
+        
+
+
+
     }
     
   return (
@@ -66,10 +111,10 @@ const RegistrationForm = () => {
 
                 <div className='mb-2'>
                     <label htmlFor="password">Password</label>
-                    <Input type="text" placeholder='password' 
+                    <Input type="password" placeholder='password' 
                     {...register("password",{
                         required:"The password is required",
-                        maxLength:{
+                        minLength:{
                             value:8,
                             message:"Password should contain at least 8 characters "
                         }
@@ -83,6 +128,8 @@ const RegistrationForm = () => {
                 </div>
 
                 <Button type='submit'>Register</Button>
+
+                <Link className='text-sm mt-3 text-right block' href={'/login'}>Already have an account? <span className='underline text-blue-500'>Login</span> </Link>
             </form>
         </div>
 
